@@ -1,0 +1,45 @@
+-- Create an SQLite database file
+ATTACH DATABASE 'StreamingServiceDB.sqlite' AS StreamingServiceDB;
+
+-- Create a table to store user information
+CREATE TABLE StreamingServiceDB.Users (
+    UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT NOT NULL,
+    Email TEXT NOT NULL,
+    Password TEXT NOT NULL
+);
+
+-- Create a table to store movie information
+CREATE TABLE StreamingServiceDB.Movies (
+    MovieID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title TEXT NOT NULL,
+    Description TEXT,
+    ReleaseDate DATE,
+    Genre TEXT,
+    TrailerURL TEXT,
+    PosterURL TEXT
+);
+
+-- Create a table to store user watchlists (user's saved movies)
+CREATE TABLE StreamingServiceDB.Watchlist (
+    WatchlistID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    MovieID INTEGER,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (MovieID) REFERENCES Movies(MovieID)
+);
+
+-- Create a table to store user interactions (e.g., user movie ratings)
+CREATE TABLE StreamingServiceDB.UserInteractions (
+    InteractionID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    MovieID INTEGER,
+    Rating INTEGER,
+    Comment TEXT,
+    InteractionDate DATETIME,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID),
+    FOREIGN KEY (MovieID) REFERENCES Movies(MovieID)
+);
+
+-- Detach the database (optional)
+DETACH DATABASE StreamingServiceDB;
